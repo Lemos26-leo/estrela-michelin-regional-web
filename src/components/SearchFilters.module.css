@@ -1,0 +1,35 @@
+/* A faixa de filtros é a superfície recuada do design system. */
+.root {
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+}
+
+.selects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.groups {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.hint {
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 18px;
+}

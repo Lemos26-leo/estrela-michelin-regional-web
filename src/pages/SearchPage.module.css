@@ -1,0 +1,42 @@
+.root {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 60ch;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 44px;
+  font-weight: 700;
+}
+
+.lead {
+  color: var(--ink-muted);
+}
+
+.results {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.loading {
+  padding: var(--space-8) var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 28px;
+    line-height: 34px;
+  }
+}

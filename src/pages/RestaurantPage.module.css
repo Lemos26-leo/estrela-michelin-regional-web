@@ -1,0 +1,16 @@
+.root {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 60ch;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+}
+
+.text {
+  color: var(--ink-muted);
+}
