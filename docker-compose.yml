@@ -1,9 +1,10 @@
 name: estrela-michelin-regional-web
 
 services:
-  # O front em contêiner, para rodar sem instalar Node. As chamadas à API
-  # saem do navegador, então VITE_API_URL aponta para a porta no host.
-  web:
+  # Serviços levam o nome do processo: o projeto já se chama
+  # estrela-michelin-regional-web. As chamadas à API saem do navegador,
+  # então VITE_API_URL aponta para a porta no host.
+  vite:
     build:
       context: .
       dockerfile: Dockerfile.dev
