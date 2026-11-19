@@ -1,0 +1,6 @@
+# O Dockerfile.dev não copia nada: o código entra por volume. Isto só evita
+# mandar pastas grandes para o daemon do Docker a cada build.
+.git
+node_modules
+dist
+.env

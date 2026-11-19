@@ -10,15 +10,32 @@ documentação do projeto fica em `estrela-michelin-regional`.
 
 ## Rodar
 
+O único pré-requisito é Docker. O `docker compose` sobe o Vite sem instalar
+Node na máquina:
+
+```bash
+docker compose up
+```
+
+Na primeira vez ele monta a imagem e instala as dependências; depois a tela
+fica em `http://localhost:5173`. Use `-d` para soltar o terminal,
+`docker compose logs -f web` para ver os logs e `docker compose down` para
+parar. Os arquivos ficam montados, então editar o código recarrega a tela.
+
+A API precisa estar rodando na porta 3000 — suba o outro repositório com
+`docker compose up` também. Para trabalhar sem ela, crie um `.env` com
+`VITE_USE_MOCK=true`: a tela passa a usar `src/api/mock.json`, no formato
+do contrato.
+
+### Com Node instalado
+
+Quem tem Node 20 ou mais novo pode dispensar o Docker:
+
 ```bash
 npm install
 cp .env.example .env     # VITE_API_URL=http://localhost:3000
 npm run dev              # http://localhost:5173
 ```
-
-A API precisa estar rodando na porta 3000. Para trabalhar sem ela, coloque
-`VITE_USE_MOCK=true` no `.env`: a tela passa a usar `src/api/mock.json`, no
-formato do contrato.
 
 ```bash
 npm run build   # tsc -b && vite build

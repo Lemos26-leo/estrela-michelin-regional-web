@@ -1,0 +1,22 @@
+name: estrela-michelin-regional-web
+
+services:
+  # O front em contêiner, para rodar sem instalar Node. As chamadas à API
+  # saem do navegador, então VITE_API_URL aponta para a porta no host.
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      # Volume próprio: as dependências nativas são as do Linux do
+      # contêiner, não as da máquina de quem roda.
+      - node_modules:/app/node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+
+volumes:
+  node_modules:
