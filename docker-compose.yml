@@ -5,9 +5,10 @@ services:
   # estrela-michelin-regional-web. As chamadas à API saem do navegador,
   # então VITE_API_URL aponta para a porta no host.
   vite:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    # Imagem oficial do Node, sem Dockerfile próprio: o front não precisa de
+    # nada além do que ela já traz.
+    image: node:22-alpine
+    working_dir: /app
     environment:
       VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
     ports:

@@ -17,10 +17,11 @@ Node na máquina:
 docker compose up
 ```
 
-Na primeira vez ele monta a imagem e instala as dependências; depois a tela
-fica em `http://localhost:5173`. Use `-d` para soltar o terminal,
-`docker compose logs -f vite` para ver os logs e `docker compose down` para
-parar. Os arquivos ficam montados, então editar o código recarrega a tela.
+Na primeira vez ele baixa a imagem oficial do Node e instala as
+dependências; depois a tela fica em `http://localhost:5173`. Use `-d` para
+soltar o terminal, `docker compose logs -f vite` para ver os logs e
+`docker compose down` para parar. Os arquivos ficam montados, então editar o
+código recarrega a tela.
 
 A API precisa estar rodando na porta 3000 — suba o outro repositório com
 `docker compose up` também. Para trabalhar sem ela, crie um `.env` com
