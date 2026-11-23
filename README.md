@@ -1,9 +1,15 @@
 # Estrela Michelin Regional — Web
 
 Front React + TypeScript (Vite) do **UC-C04 Buscar restaurantes por
-contexto**. Consome a API em
-[`estrela-michelin-regional-api`](../estrela-michelin-regional-api); a
-documentação do projeto fica em `estrela-michelin-regional`.
+contexto**.
+
+Os três repositórios do projeto:
+
+| Repositório | Conteúdo |
+| --- | --- |
+| [estrela-michelin-regional](https://github.com/christiantakahashi/estrela-michelin-regional) | Documentos e diagramas |
+| [estrela-michelin-regional-api](https://github.com/Lemos26-leo/estrela-michelin-regional-api) | API Rails + PostgreSQL |
+| **estrela-michelin-regional-web** (este) | Front React + TypeScript |
 
 - Node 20 ou mais novo
 - Porta local: `5173`
