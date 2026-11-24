@@ -1,7 +1,13 @@
-import { formatPriceRange, formatRating } from '../api/types'
-import type { SearchCriteria, SearchOptions } from '../api/types'
-import { Button, ChipGroup, Select } from './ui'
-import type { ChipOption } from './ui'
+import {
+  formatPriceRange,
+  formatRating,
+  type SearchCriteria,
+  type SearchOptions,
+  type TagOption,
+} from '../api/types'
+import { Button } from './ui/Button'
+import { ChipGroup, type ChipOption } from './ui/Chip'
+import { Select, type SelectOption } from './ui/Select'
 import styles from './SearchFilters.module.css'
 
 type SearchFiltersProps = {
@@ -10,43 +16,47 @@ type SearchFiltersProps = {
   onChange: (patch: Partial<SearchCriteria>) => void
   onSubmit: () => void
   onClear: () => void
-  loading: boolean
+  loading?: boolean
 }
 
-function tagOptions(tags: { id: number; name: string }[]): ChipOption[] {
-  return tags.map((tag) => ({ value: String(tag.id), label: tag.name }))
+function toChipOptions(items: TagOption[]): ChipOption[] {
+  return items.map((item) => ({
+    value: String(item.id),
+    label: item.name,
+  }))
 }
 
-function toIds(values: string[]): number[] {
-  return values.map(Number)
-}
-
-/**
- * Critérios do UC-C04. Nenhum é obrigatório: o que ficar vazio não
- * vira filtro (RN-C01).
- */
 export function SearchFilters({
   options,
   criteria,
   onChange,
   onSubmit,
   onClear,
-  loading,
+  loading = false,
 }: SearchFiltersProps) {
-  const hasCriteria =
-    criteria.city_id !== null ||
-    criteria.min_rating !== null ||
-    criteria.cuisines.length > 0 ||
-    criteria.occasions.length > 0 ||
-    criteria.vibes.length > 0 ||
-    criteria.price_ranges.length > 0 ||
-    criteria.amenities.length > 0
+  const cityOptions: SelectOption[] = options.cities.map((city) => ({
+    value: String(city.id),
+    label: `${city.name} (${city.state})`,
+  }))
+
+  const ratingOptions: SelectOption[] = options.min_ratings.map((rating) => ({
+    value: String(rating),
+    label: `${formatRating(rating)} ★ ou mais`,
+  }))
+
+  const priceChipOptions: ChipOption[] = options.price_ranges.map((price) => ({
+    value: String(price),
+    label: formatPriceRange(price),
+  }))
+
+  const toStringIds = (ids: number[]) => ids.map(String)
+  const toNumberIds = (values: string[]) => values.map(Number)
 
   return (
     <form
       className={styles.root}
-      onSubmit={(event) => {
-        event.preventDefault()
+      onSubmit={(e) => {
+        e.preventDefault()
         onSubmit()
       }}
     >
@@ -54,71 +64,68 @@ export function SearchFilters({
         <Select
           label="Cidade"
           placeholder="Todas as cidades"
-          value={criteria.city_id === null ? '' : String(criteria.city_id)}
-          options={options.cities.map((city) => ({
-            value: String(city.id),
-            label: `${city.name} — ${city.state}`,
-          }))}
-          onChange={(value) => onChange({ city_id: value === '' ? null : Number(value) })}
+          options={cityOptions}
+          value={criteria.city_id !== null ? String(criteria.city_id) : ''}
+          onChange={(value) =>
+            onChange({ city_id: value ? Number(value) : null })
+          }
         />
+
         <Select
           label="Nota mínima"
           placeholder="Qualquer nota"
-          value={criteria.min_rating === null ? '' : String(criteria.min_rating)}
-          options={options.min_ratings.map((rating) => ({
-            value: String(rating),
-            label: `${formatRating(rating)} ou mais`,
-          }))}
-          onChange={(value) => onChange({ min_rating: value === '' ? null : Number(value) })}
+          options={ratingOptions}
+          value={criteria.min_rating !== null ? String(criteria.min_rating) : ''}
+          onChange={(value) =>
+            onChange({ min_rating: value ? Number(value) : null })
+          }
         />
       </div>
 
-      <div className={styles.groups}>
+      <div className={styles.chips}>
         <ChipGroup
           label="Ocasião"
-          options={tagOptions(options.tags.occasion)}
-          value={criteria.occasions.map(String)}
-          onChange={(value) => onChange({ occasions: toIds(value) })}
+          options={toChipOptions(options.tags.occasion)}
+          value={toStringIds(criteria.occasions)}
+          onChange={(values) => onChange({ occasions: toNumberIds(values) })}
         />
+
         <ChipGroup
           label="Vibe"
-          options={tagOptions(options.tags.vibe)}
-          value={criteria.vibes.map(String)}
-          onChange={(value) => onChange({ vibes: toIds(value) })}
+          options={toChipOptions(options.tags.vibe)}
+          value={toStringIds(criteria.vibes)}
+          onChange={(values) => onChange({ vibes: toNumberIds(values) })}
         />
+
         <ChipGroup
           label="Culinária"
-          options={tagOptions(options.tags.cuisine)}
-          value={criteria.cuisines.map(String)}
-          onChange={(value) => onChange({ cuisines: toIds(value) })}
+          options={toChipOptions(options.tags.cuisine)}
+          value={toStringIds(criteria.cuisines)}
+          onChange={(values) => onChange({ cuisines: toNumberIds(values) })}
         />
+
         <ChipGroup
-          label="Preço"
-          options={options.price_ranges.map((range) => ({
-            value: String(range),
-            label: formatPriceRange(range),
-          }))}
-          value={criteria.price_ranges.map(String)}
-          onChange={(value) => onChange({ price_ranges: toIds(value) })}
+          label="Faixa de preço"
+          options={priceChipOptions}
+          value={toStringIds(criteria.price_ranges)}
+          onChange={(values) => onChange({ price_ranges: toNumberIds(values) })}
         />
+
         <ChipGroup
           label="Comodidades"
-          options={tagOptions(options.tags.amenity)}
-          value={criteria.amenities.map(String)}
-          onChange={(value) => onChange({ amenities: toIds(value) })}
+          options={toChipOptions(options.tags.amenity)}
+          value={toStringIds(criteria.amenities)}
+          onChange={(values) => onChange({ amenities: toNumberIds(values) })}
         />
       </div>
 
       <div className={styles.actions}>
-        <Button type="submit" disabled={loading}>
-          {loading ? 'Buscando…' : 'Buscar restaurantes'}
+        <Button type="submit" variant="primary" disabled={loading}>
+          {loading ? 'Buscando...' : 'Buscar'}
         </Button>
-        <Button variant="secondary" onClick={onClear} disabled={!hasCriteria || loading}>
+        <Button type="button" variant="secondary" onClick={onClear}>
           Limpar filtros
         </Button>
-        <p className={styles.hint}>
-          Sem ocasião nem vibe, a lista vem ordenada por nota.
-        </p>
       </div>
     </form>
   )
